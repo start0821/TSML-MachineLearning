@@ -1,4 +1,4 @@
-# Normal Distribution
+# Normal Distribution, Beta Distribution
 import math
 import numpy as np
 
@@ -10,17 +10,9 @@ class NormalDistribution:
         self.distribution = np.vectorize(self.distribution)
 
     def distribution(self,x=0):
-        # if type(x) is np.ndarray:
-        #     average_array = np.array(x.size)
-        #     average_array.fill(self.average)
-        #     return (1./(self.variance*math.sqrt(math.pi*2.)))*math.exp(-(x-average_array)**2/(2.*self.variance**2))
         return (1./(self.variance*math.sqrt(math.pi*2.)))*math.exp(-(x-self.average)**2/(2.*self.variance**2))
 
 def N(x,average=0,variance=1):
-    # if type(x) is np.ndarray:
-    #     # average_array = np.array(x.size)
-    #     # average_array.fill(average)
-    #     return (1./(variance*math.sqrt(math.pi*2.)))*math.exp(-(x-average)**2/(2.*variance**2))
     return (1./(variance*math.sqrt(math.pi*2.)))*math.exp(-(x-average)**2/(2.*variance**2))
 N = np.vectorize(N)
 
