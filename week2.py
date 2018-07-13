@@ -48,13 +48,32 @@ class BinomialDistribution:
 
 def Bi(x,alpha,beta):
     return math.factorial(self.n)/(math.factorial(x)*math.factorial(self.n-x)) * (self.p**x) * ((1-self.p)**(self.n-x))
-Bi = np.vectorize(Beta)
+Bi = np.vectorize(Bi)
 
 
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-    Dis = BinomialDistribution(100,.2)
-    X = np.array(list(range(1,100)))
-    Y = Dis.distribution(X)
-    plt.plot(X,Y,'o')
-    plt.show()
+# class MultinomialDistribution:
+#     def __init__(self,*args):
+#         print(len(args))
+#         self.n = np.array([args[i] for i in range(len(args)//2)])
+#         self.p = np.array([args[i] for i in range(len(args)//2+1,len(args))])
+#         self.distribution = np.vectorize(self.distribution)
+#         self.mean = np.sum(self.n*self.p)
+#         self.variance = np.sum(self.n*self.p*(1-self.p))
+#
+#     def distribution(self,x):
+#         return math.factorial(self.n)/(math.factorial(x)*math.factorial(self.n-x)) * (self.p**x) * ((1-self.p)**(self.n-x))
+#
+# def Multi(*args):
+#     n = np.array([args[i] for i in range(len(args)//2)])
+#     p = np.array([args[i] for i in range(len(args)//2+1,len(args))])
+#     return np.math.factorial(n)/(np.math.factorial(x)*np.math.factorial(n-x)) * (p**x) * ((1-p)**(n-x))
+# Multi = np.vectorize(Multi)
+#
+#
+# if __name__ == "__main__":
+#     import matplotlib.pyplot as plt
+#     # Dis = MultinomialDistribution(100,.2)
+#     X = np.array(list(range(1,100)))
+#     Y = Multi(X)
+#     plt.plot(X,Y,'o')
+#     plt.show()
