@@ -25,6 +25,8 @@ def convert_to_int(data):
 
 ## colomn에 있는 문자의 개수를 추출함.
 def extract_to_result_num_from_column(data,column_num=-1):
+    if column_num==None:
+        return 0
     return len(set(data[:,column_num]))
 
 if __name__ == '__main__':
@@ -94,20 +96,26 @@ def calculate_information_gain(data):  ## data는 하나의 데이터와 결과�
     # print(result,"hi")
     return result
 
+def maximum_information_gain(data,column_num):
+    entropy = []
+    for i in range(column_num):
+        sample = data[:,[i,-1]]
+        entropy.append(calculate_information_gain(sample))
+    entropy = np.array(entropy)
+    print("entropy :",entropy)
+    result = np.argmax(entropy,axis=0)
+    if entropy[result] < 1e-5:
+        return None
+    else:
+        return result
 
 data = convert_to_int(data)
 print(data)
 one_entropy = calculate_entropy(data[:,[0,-1]])
 # print("one_entropy :", one_entropy)
-entropy = []
-for i in range(len(data[0])-1):
-    sample = data[:,[i,-1]]
-    entropy.append(calculate_information_gain(sample))
-entropy = np.array(entropy)
-print("entropy :",entropy)
-tree = np.argmax(entropy,axis=0)
-print("maximum :",tree ,":", entropy[tree] )
 
+tree = maximum_information_gain(data,len(data[0])-1)
+print("maximum :",tree )
 decision_tree = bt.Tree()
 decision_tree.set_node(tree,extract_to_result_num_from_column(data,tree))
 filter_data = []
@@ -117,33 +125,25 @@ for i in range(extract_to_result_num_from_column(data,tree)):
     processed_data = data[filter_data[i]]
 
     # print("filter_data :", filter_data[i],(-1,len(data[0])))
-    entropy = []
-    for j in range(len(data[0])-1):
-        sample = processed_data[:,[j,-1]]
-        entropy.append(calculate_information_gain(sample))
-    entropy = np.array(entropy)
-    print("entropy :",entropy)
-    tree = np.argmax(entropy,axis=0)
-    print("maximum :",tree ,":", entropy[tree] )
+    tree = maximum_information_gain(processed_data,len(data[0])-1)
+    print("maximum :",tree )
     decision_tree.put_leaf_deeply([i],i,tree,extract_to_result_num_from_column(processed_data,tree))
+    
     print(decision_tree.root.leaves[i].value)
     print("----------------------------------------------")
     filter2_data = []
-    print("filter2" , filter2_data)
     for j in range(extract_to_result_num_from_column(processed_data,tree)):
         filter2_data.append(np.reshape(np.where((processed_data[:,decision_tree.root.leaves[i].value]==j)),(-1)))
         # filter2_data.append(np.extract(data[:,5]==i,data))
         second_data = processed_data[filter2_data[j]]
-        entropy = []
-        for k in range(len(data[0])-1):
-            sample = second_data[:,[k,-1]]
-            entropy.append(calculate_information_gain(sample))
-        entropy = np.array(entropy)
-        print("entropy :",entropy)
-        tree = np.argmax(entropy,axis=0)
-        print("maximum :",tree ,":", entropy[tree] )
+
+        tree = maximum_information_gain(second_data,len(data[0])-1)
+        print("maximum :",tree )
         decision_tree.put_leaf_deeply([i,j],j,tree,extract_to_result_num_from_column(second_data,tree))
-        print(decision_tree.root.leaves[i].leaves[j].value)
+        if decision_tree.root.leaves[i].leaves!= None:
+            print(decision_tree.root.leaves[i].leaves[j].value)
+        else:
+            print(None)
     print("-------------finish--------------------")
 
         # print("filter_data :", filter_data[i],(-1,len(data[0])))

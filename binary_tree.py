@@ -41,7 +41,8 @@ class Tree:
                 if self.root.leaves[locate]==None:
                     iterator = self.root.leaves[locate]
                     iterator = Node(value,leaves_num)
-                    self.root.set_leaf(num,value,leaves_num)
+                    iterator.set_leaf(num,value,leaves_num)
+                    self.root.leaves[locate] = iterator
                 iterator = self.root.leaves[locate]
             else:
                 if iterator.leaves[locate]==None:

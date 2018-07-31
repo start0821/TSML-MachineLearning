@@ -70,7 +70,18 @@ Bi = np.vectorize(Bi)
 # Multi = np.vectorize(Multi)
 #
 #
-# if __name__ == "__main__":
+if __name__ == "__main__":
+    Dis = BetaDistribution(7,5)
+    print(Dis.distribution(0.9))
+    X = np.array([[1,1],
+                  [1,2],
+                  [1,3]])
+    Y = np.array([2,
+                  6,
+                  4])
+    from numpy.linalg import inv
+    theta = np.matmul(inv(np.matmul(np.transpose(X),X)), np.matmul(np.transpose(X),Y))
+    print(theta)
 #     import matplotlib.pyplot as plt
 #     # Dis = MultinomialDistribution(100,.2)
 #     X = np.array(list(range(1,100)))
